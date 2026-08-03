@@ -1,0 +1,61 @@
+import java.util.*;
+
+public class FindS {
+
+    public static void main(String[] args) {
+
+        // Training Data
+        // Attributes: Sky, AirTemp, Humidity, Wind, Water, Forecast
+        // Last column = Class (Yes/No)
+
+        String[][] trainingData = {
+            {"Sunny", "Warm", "Normal", "Strong", "Warm", "Same", "Yes"},
+            {"Sunny", "Warm", "High", "Strong", "Warm", "Same", "Yes"},
+            {"Rainy", "Cold", "High", "Strong", "Warm", "Change", "No"},
+            {"Sunny", "Warm", "High", "Strong", "Cool", "Change", "Yes"}
+        };
+
+        int numAttributes = trainingData[0].length - 1;
+
+        // Initialize hypothesis with null
+        String[] hypothesis = new String[numAttributes];
+        Arrays.fill(hypothesis, "0");
+
+        System.out.println("FIND-S Algorithm Execution\n");
+
+        for (int i = 0; i < trainingData.length; i++) {
+
+            if (trainingData[i][numAttributes].equalsIgnoreCase("Yes")) {
+
+                if (hypothesis[0].equals("0")) {
+                    // First positive example
+                    for (int j = 0; j < numAttributes; j++) {
+                        hypothesis[j] = trainingData[i][j];
+                    }
+                } else {
+                    // Generalize hypothesis
+                    for (int j = 0; j < numAttributes; j++) {
+                        if (!hypothesis[j].equals(trainingData[i][j])) {
+                            hypothesis[j] = "?";
+                        }
+                    }
+                }
+
+                System.out.print("Hypothesis after Positive Example " + (i + 1) + ": ");
+                printHypothesis(hypothesis);
+            }
+        }
+
+        System.out.println("\nFinal Most Specific Hypothesis:");
+        printHypothesis(hypothesis);
+    }
+
+    // Method to print hypothesis
+    public static void printHypothesis(String[] hypothesis) {
+        System.out.print("< ");
+        for (String h : hypothesis) {
+            System.out.print(h + " ");
+        }
+        System.out.println(">");
+    }
+}
