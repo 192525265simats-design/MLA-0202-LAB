@@ -1,0 +1,60 @@
+import csv
+import copy
+
+ Read CSV file
+with open('trainingdata.csv') as csvFile:
+    data = list(csv.reader(csvFile))
+
+ Separate attributes and target
+concepts = [x[:-1] for x in data[1:]]
+target = [x[-1] for x in data[1:]]
+
+ Number of attributes
+num_attributes = len(concepts[0])
+
+ Initialize Specific Hypothesis
+S = concepts[0].copy()
+
+ Initialize General Hypothesis
+G = [['?' for i in range(num_attributes)] for j in range(num_attributes)]
+
+print("Training Data:")
+for c, t in zip(concepts, target):
+    print(c, "->", t)
+
+ Candidate Elimination Algorithm
+for i, h in enumerate(concepts):
+
+    if target[i].lower() == "yes":
+
+        # Generalize S
+        for x in range(num_attributes):
+            if h[x] != S[x]:
+                S[x] = '?'
+                G[x][x] = '?'
+
+    else:
+
+         Specialize G
+        for x in range(num_attributes):
+            if h[x] != S[x]:
+                G[x][x] = S[x]
+            else:
+                G[x][x] = '?'
+
+    print("\nStep", i + 1)
+    print("Specific Hypothesis (S):", S)
+    print("General Hypothesis (G):")
+    for g in G:
+        print(g)
+
+ Remove overly general rows
+G_final = [g for g in G if g != ['?' for i in range(num_attributes)]]
+
+print("\n==============================")
+print("Final Specific Hypothesis (S):")
+print(S)
+
+print("\nFinal General Hypothesis (G):")
+for g in G_final:
+    print(g)
