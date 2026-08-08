@@ -1,0 +1,26 @@
+ Car Price Prediction using Linear Regression
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+print("My name is Vannur Swamy")
+ Load dataset
+data = pd.read_csv("car_price.csv")
+ Select input and output
+X = data[["Year", "Kms_Driven"]]
+y = data["Selling_Price"]
+ Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+ Create and train model
+model = LinearRegression()
+model.fit(X_train, y_train)
+Predict
+y_pred = model.predict(X_test)
+
+Accuracy
+print("R2 Score:", r2_score(y_test, y_pred))
+ Sample prediction
+sample = [[2020, 20000]]
+print("Predicted Car Price:", model.predict(sample)[0])
