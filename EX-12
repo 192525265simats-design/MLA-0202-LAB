@@ -1,0 +1,37 @@
+# Iris Flower Classification using KNN
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+print("My name is Vannur Swamy")
+
+# Load dataset
+data = pd.read_csv("Iris.csv")
+
+# Input and output
+X = data[["SepalLengthCm", "SepalWidthCm",
+          "PetalLengthCm", "PetalWidthCm"]]
+y = data["Species"]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create KNN model
+model = KNeighborsClassifier(n_neighbors=5)
+
+# Train model
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Accuracy
+print("Accuracy:", accuracy_score(y_test, y_pred) * 100, "%")
+
+# Sample prediction
+sample = [[5.1, 3.5, 1.4, 0.2]]
+print("Predicted Flower:", model.predict(sample)[0])
